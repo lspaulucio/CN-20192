@@ -34,10 +34,6 @@ class Particle:
         self.pbest_value = float('inf')
         self.pbest_err = self.error  # best error
 
-    def move(self):
-        self.position += self.velocity
-
-
 def PSO(max_epochs, n, fitness, seed=None):
     
     if seed is not None:
@@ -113,7 +109,7 @@ def PSO(max_epochs, n, fitness, seed=None):
 
 if __name__ == "__main__":
 
-    fitness = F.Langermann(dim=2)
+    fitness = F.Schwefel(dim=2)
     epochs = 200
 
     best_position = PSO(epochs, 100, fitness)

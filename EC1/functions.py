@@ -1,11 +1,15 @@
 
 # -*- coding: utf-8 -*-
+# Aluno: Leonardo Santos Paulucio
+# Data: 17/09/19
+# Natural Computing - 2019/2
+# Computacional Exercise 1
 
-import numpy as np
-
-# Implemented functions
+# Functions for optimization
+# Implemented functions: 
 # Ackley, Rosenbrock, Rastrigin, Langermann, Schwefel, Griewank
 
+import numpy as np
 
 class Function():
     
@@ -110,7 +114,7 @@ class Schwefel(Function):
     def __call__(self, position):
         A = 418.9829
         D = self.dim()
-        s1 = np.sin(np.sqrt(np.abs(position))).sum()
+        s1 = np.sum(position * np.sin(np.sqrt(np.abs(position))))
         
         return A*D - s1
     
