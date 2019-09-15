@@ -13,7 +13,7 @@ class Function():
         self.dimension = dim
 
     def dim(self):
-        raise NotImplementedError
+        return self.dimension
     
     def __call__(self):
         raise NotImplementedError
@@ -33,9 +33,6 @@ class Ackley(Function):
         s1 = np.square(position).mean()
         s2 = np.cos(C * position).mean()
         return -A * np.exp(-B * np.sqrt(s1)) - np.exp(s2) + A + np.exp(1)
-
-    def dim(self):
-        return self.dimension
     
     def search_space(self):
         return (-32.768, 32.768)
@@ -43,14 +40,22 @@ class Ackley(Function):
 
 class Rosenbrock(Function):
     
-    def __call__(self):
-        raise NotImplementedError
+    def __init__(self, dim=2):
+        super().__init__(dim)
 
-    def dim(self):
-        raise NotImplementedError
-    
+    def __call__(self, position):
+        A = 100
+        D = self.dim()
+        sum = 0
+        for i in range(D-1):
+            x_i = position[i]
+            x_next = position[i+1]
+            sum += A*(x_next - x_i**2)**2 + (x_i - 1)**2
+
+        return sum
+
     def search_space(self):
-        raise NotImplementedError
+        return (-2.048, 2.048)
 
 class Rastrigin(Function):
 
@@ -59,13 +64,8 @@ class Rastrigin(Function):
     
     def __call__(self, position):
         D = self.dim()
-
         s = np.square(position) - 10*np.cos(2*np.math.pi*position)
-
         return 10*D + s.sum()
-
-    def dim(self):
-        return self.dimension
     
     def search_space(self):
         return (-5.12, 5.12)
@@ -74,12 +74,33 @@ class Langermann(Function):
     
     def __init__(self, dim):
         super().__init__(dim)
-
-    def dim(self):
-        return self.dimension
+        assert (dim == 2)
     
+    def __call__(self, position):
+        A = np.array([[3, 5],
+                      [5, 2],
+                      [2, 1],
+                      [1, 4],
+                      [7, 9]])
+
+        C = np.array([1, 2, 5, 2, 3])
+        M = 5
+        D = self.dim()
+        
+        outer = 0
+        for i in range(M):
+            inner = 0
+            for j in range(D):
+                x_j = position[j]
+                inner += (x_j - A[i][j])**2
+            new = C[i] * np.exp(-inner/np.math.pi) * np.cos(np.math.pi*inner)
+            outer = outer + new
+        
+        return -outer
+
+
     def search_space(self):
-        raise NotImplementedError
+        return (0, 10)
 
 class Schwefel(Function):
 
@@ -92,9 +113,6 @@ class Schwefel(Function):
         s1 = np.sin(np.sqrt(np.abs(position))).sum()
         
         return A*D - s1
-
-    def dim(self):
-        return self.dimension
     
     def search_space(self):
         return (-500, 500)
@@ -112,9 +130,6 @@ class Griewank(Function):
         s2 = np.cos(position/denominator).sum()
 
         return s1 - s2 + 1
-    
-    def dim(self):
-        return self.dimension
-    
+        
     def search_space(self):
         return (-600, 600)

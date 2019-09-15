@@ -113,9 +113,8 @@ def PSO(max_epochs, n, fitness, seed=None):
 
 if __name__ == "__main__":
 
-    fitness = F.Ackley(dim=3)
-    
-    epochs = 100
+    fitness = F.Langermann(dim=2)
+    epochs = 200
 
     best_position = PSO(epochs, 100, fitness)
 
