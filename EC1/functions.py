@@ -131,7 +131,7 @@ class Griewank(Function):
         s1 = np.square(position).sum() / A
         denominator = [np.sqrt(i) for i in range(1, self.dim()+1)]
         denominator = np.array(denominator)
-        s2 = np.cos(position/denominator).sum()
+        s2 = np.prod(np.cos(position / denominator))
 
         return s1 - s2 + 1
         
