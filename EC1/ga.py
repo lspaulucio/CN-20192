@@ -67,6 +67,8 @@ class Population:
         self.offspring = []
         self.best_position = self.population[0].position
         self.best_error = self.population[0].error
+        
+        self.evaluate()
 
     def evaluate(self):
         for ind in self.population:
@@ -107,11 +109,11 @@ class Population:
                 ind.mutate(sigma)
 
     def run_generation(self):
-        self.evaluate()
         self.selection()
         self.crossover()
         self.mutation(sigma=0.3)
         self.population = self.parents + self.offspring
+        self.evaluate()
 
         
 
@@ -127,7 +129,7 @@ def GA(max_epochs, N, fitness, seed=None):
 
     # create population
     population = Population(N, dimension, fitness, crossover_prob=cross_prob, mutation_prob=mut_prob)
-    population.evaluate()
+    
         
     for epoch in range(max_epochs):
 
