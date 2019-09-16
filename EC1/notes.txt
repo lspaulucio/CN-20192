@@ -1,0 +1,10 @@
+def search_space(self):
+        lower_lim = -32.768
+        upper_lim =  32.768
+        space = np.ones((self.dim(), 2))
+        space[:, 0] *= lower_lim
+        space[:, 1] *= upper_lim
+
+        return space
+
+https://en.wikipedia.org/wiki/Test_functions_for_optimization

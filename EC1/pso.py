@@ -11,7 +11,6 @@
 
 import sys
 import copy
-import random
 import numpy as np
 import functions as F
 
@@ -37,10 +36,7 @@ class Particle:
 def PSO(max_epochs, n, fitness, seed=None):
     
     if seed is not None:
-        rnd = random.Random(seed)
-    else:
-        rnd = random.Random()
-
+        np.random.seed(seed)
 
     dim = fitness.dim()
     minx, maxx = fitness.search_space()
@@ -69,8 +65,8 @@ def PSO(max_epochs, n, fitness, seed=None):
         for i in range(n):  # process each particle
             # compute new velocity of curr particle
             for k in range(dim):
-                r1 = rnd.random()    # randomizations
-                r2 = rnd.random()
+                r1 = np.random.random()    # randomizations
+                r2 = np.random.random()
 
                 swarm[i].velocity[k] =  chi * (swarm[i].velocity[k] +
                                         (c1 * r1 * (swarm[i].pbest_position[k] - swarm[i].position[k])) + # personal
@@ -104,12 +100,11 @@ def PSO(max_epochs, n, fitness, seed=None):
     # while
     print("")
     return best_swarm_pos
-# end Solve
 
 
 if __name__ == "__main__":
 
-    fitness = F.Schwefel(dim=2)
+    fitness = F.Griewank(dim=2)
     epochs = 200
 
     best_position = PSO(epochs, 100, fitness)

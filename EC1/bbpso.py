@@ -34,10 +34,7 @@ class Particle:
 def BBPSO(max_epochs, n, fitness, seed=None):
     
     if seed is not None:
-        rnd = random.Random(seed)
-    else:
-        rnd = random.Random()
-
+        np.random.seed(seed)
 
     dim = fitness.dim()
     minx, maxx = fitness.search_space()
@@ -65,9 +62,9 @@ def BBPSO(max_epochs, n, fitness, seed=None):
             for k in range(dim):
                 mu = (swarm[i].position[k] + best_swarm_pos[k]) / 2
                 sigma = np.abs(swarm[i].position[k] - best_swarm_pos[k])
-                omega = rnd.random()
+                omega = np.random.random()
                 if omega > 0.5:
-                    new_position = rnd.gauss(mu, sigma)         
+                    new_position = np.random.normal(mu, sigma)
                 else:
                     new_position = swarm[i].position[k]
 
@@ -96,7 +93,7 @@ def BBPSO(max_epochs, n, fitness, seed=None):
     # while
     print("")
     return best_swarm_pos
-# end Solve
+
 
 
 if __name__ == "__main__":
