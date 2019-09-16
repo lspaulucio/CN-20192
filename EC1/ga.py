@@ -101,13 +101,18 @@ class Population:
 
         for _ in range(self.size):
         # for _ in range(num_offspring):
+            prob = np.random.rand()
             sample = list(np.random.choice(self.parents, 2, replace=False))
-            beta = np.random.rand()
-            ind1 = sample[0].cross(sample[1], beta)
-            ind1.evaluate(self.fitness)
-            ind2 = sample[1].cross(sample[0], beta)
-            ind2.evaluate(self.fitness)
-                
+            if prob <= self.crossover_prob:
+                beta = np.random.rand()
+                ind1 = sample[0].cross(sample[1], beta)
+                ind1.evaluate(self.fitness)
+                ind2 = sample[1].cross(sample[0], beta)
+                ind2.evaluate(self.fitness)
+            else:
+                ind1 = sample[0]
+                ind2 = sample[1]
+            
             if ind1.error < ind2.error:
                 new_offspring.append(ind1)
             else:
