@@ -30,12 +30,12 @@ class Ackley(Function):
     def __init__(self, dim=2):
         super().__init__(dim)
 
-    def __call__(self, position):
+    def __call__(self, X):
         A = 20
         B = 0.2
         C = 2 * np.math.pi
-        s1 = np.square(position).mean()
-        s2 = np.cos(C * position).mean()
+        s1 = np.square(X).mean()
+        s2 = np.cos(C * X).mean()
         return -A * np.exp(-B * np.sqrt(s1)) - np.exp(s2) + A + np.exp(1)
     
     def search_space(self):
@@ -47,13 +47,13 @@ class Rosenbrock(Function):
     def __init__(self, dim=2):
         super().__init__(dim)
 
-    def __call__(self, position):
+    def __call__(self, X):
         A = 100
         D = self.dim()
         sum = 0
         for i in range(D-1):
-            x_i = position[i]
-            x_next = position[i+1]
+            x_i = X[i]
+            x_next = X[i+1]
             sum += A*(x_next - x_i**2)**2 + (x_i - 1)**2
 
         return sum
@@ -66,10 +66,9 @@ class Rastrigin(Function):
     def __init__(self, dim=2):
         super().__init__(dim)
     
-    def __call__(self, position):
+    def __call__(self, X, A=10):
         D = self.dim()
-        s = np.square(position) - 10*np.cos(2*np.math.pi*position)
-        return 10*D + s.sum()
+        return A*D + np.sum(X**2 - A * np.cos(2 * np.math.pi * X))
     
     def search_space(self):
         return (-5.12, 5.12)
@@ -80,7 +79,7 @@ class Langermann(Function):
         super().__init__(dim)
         assert (dim == 2)
     
-    def __call__(self, position):
+    def __call__(self, X):
         A = np.array([[3, 5],
                       [5, 2],
                       [2, 1],
@@ -95,7 +94,7 @@ class Langermann(Function):
         for i in range(M):
             inner = 0
             for j in range(D):
-                x_j = position[j]
+                x_j = X[j]
                 inner += (x_j - A[i][j])**2
             new = C[i] * np.exp(-inner/np.math.pi) * np.cos(np.math.pi*inner)
             outer = outer + new
@@ -111,10 +110,10 @@ class Schwefel(Function):
     def __init__(self, dim=2):
         super().__init__(dim)
     
-    def __call__(self, position):
+    def __call__(self, X):
         A = 418.9829
         D = self.dim()
-        s1 = np.sum(position * np.sin(np.sqrt(np.abs(position))))
+        s1 = np.sum(X * np.sin(np.sqrt(np.abs(X))))
         
         return A*D - s1
     
@@ -126,14 +125,20 @@ class Griewank(Function):
     def __init__(self, dim=2):
         super().__init__(dim)
 
-    def __call__(self, position):
+    def __call__(self, X):
         A = 4000
-        s1 = np.square(position).sum() / A
+        s1 = np.square(X).sum() / A
         denominator = [np.sqrt(i) for i in range(1, self.dim()+1)]
         denominator = np.array(denominator)
-        s2 = np.prod(np.cos(position / denominator))
+        s2 = np.prod(np.cos(X / denominator))
 
         return s1 - s2 + 1
         
     def search_space(self):
         return (-600, 600)
+
+if __name__ == "__main__":
+
+    f = Rastrigin(2)
+    X = np.array([0,0])
+    print(f(X))
