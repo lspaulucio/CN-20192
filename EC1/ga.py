@@ -20,14 +20,12 @@ def print_position(position):
 
 
 class Individual:
-    def __init__(self, dim, fitness, minx=None, maxx=None, position=None):
+    def __init__(self, dim, minx=-10, maxx=10, position=None):
         self.dim = dim
+        self.minx = minx
+        self.maxx = maxx
         
         if position is None:
-            if minx is None:
-                minx = -10
-            if maxx is None:
-                maxx = 10
             self.position = (maxx - minx) * np.random.rand(dim) + minx
         else:
             minx, maxx = fitness.search_space()
@@ -35,78 +33,87 @@ class Individual:
             position[position > maxx] = maxx
             self.position = position
 
-        self.fitness = fitness
-        self.error = fitness(self.position)  # curr error
+        self.error = float('inf')  # initial error
 
-    def mutate(self, mi=0, sigma=1):
-        beta = np.random.normal(mi, sigma)
-        self.position *= beta
-        self.error = self.fitness(self.position)
+    def mutate(self, sigma):
+        for i in range(self.dim):
+            gene = self.position[i]
+            beta = np.random.normal(gene, sigma)
+            new_position = beta * self.position
+            new_position[new_position < self.minx] = self.minx
+            new_position[new_position > self.maxx] = self.maxx
+        
+        self.position = new_position
 
     def cross(self, other, beta):
         new_position = (beta * self.position) + (1 - beta) * other.position
-        new = Individual(self.dim, self.fitness, position=new_position)
+        new = Individual(self.dim, self.minx, self.maxx, position=new_position)
         return new
 
-    def evaluate(self):
-        self.error = self.fitness(self.position)
+    def evaluate(self, fitness):
+        self.error = fitness(self.position)
 
 
 class Population:
-    def __init__(self, size, dimension, fitness):
+    def __init__(self, size, dimension, fitness, crossover_prob=0.65, mutation_prob=0.1):
         minx, maxx = fitness.search_space()
+        self.crossover_prob = crossover_prob
+        self.mutation_prob = mutation_prob
         self.dim = dimension
+        self.fitness = fitness
         self.size = size
-        self.population = [Individual(dimension, fitness, minx, maxx) for _ in range(size)]
-        self.population.sort(key=lambda x: x.error)
-        best_ind = self.population[0]
-        self.best_position = best_ind.position
-        self.best_error = best_ind.error
+        self.population = [Individual(dimension, minx, maxx) for _ in range(size)]
+        self.parents = []
+        self.offspring = []
+        self.best_position = self.population[0].position
+        self.best_error = self.population[0].error
 
     def evaluate(self):
-        best_ind = sorted(self.population, key=lambda x: x.error)[0]
-        if best_ind.error < self.best_error:
-            self.best_error = best_ind.error
-            self.best_position = best_ind.position
+        for ind in self.population:
+            ind.evaluate(self.fitness)
+            if ind.error < self.best_error:
+                self.best_error = ind.error
+                self.best_position = ind.position
 
-    def selection(self, k=2):
-        
-        # best_individuals = []
-        # for _ in range(self.size):
-        #     sample = list(np.random.choice(self.population, k, replace=False))
-        #     sample.sort(key=lambda x: x.error)
-        #     best_individuals.append(sample[0])
+    def selection(self, selection_fraction=0.3):
 
-        self.population.sort(key=lambda x: x.error)
+        num_parents = int(selection_fraction * self.size)        
+        self.parents = sorted(self.population, key=lambda x: x.error)[:num_parents]
 
     
-    def crossover(self, cross_prob):
-        parents_prob = 1 - cross_prob
-        num_parents = int(parents_prob * self.size)
-        parents = self.population[:num_parents]
+    def crossover(self):
+        num_offspring = self.size - len(self.parents)
+        new_offspring = []
 
-        N = self.size - num_parents
-        new_individuals = []
-
-        for _ in range(N):
-            sample = list(np.random.choice(parents, 2, replace=False))
+        for _ in range(num_offspring):
+            sample = list(np.random.choice(self.parents, 2, replace=False))
             beta = np.random.rand()
             ind1 = sample[0].cross(sample[1], beta)
+            ind1.evaluate(self.fitness)
             ind2 = sample[1].cross(sample[0], beta)
+            ind2.evaluate(self.fitness)
                 
             if ind1.error < ind2.error:
-                new_individuals.append(ind1)
+                new_offspring.append(ind1)
             else:
-                new_individuals.append(ind2)
+                new_offspring.append(ind2)
 
-        self.population = parents + new_individuals
+        self.offspring = new_offspring
         
-    def mutation(self, mut_prob, mi=0, sigma=1):
-        for ind in self.population:
+    def mutation(self, sigma=1):
+        for ind in self.offspring:
             prob = np.random.rand()
-            if prob <= mut_prob:
-                ind.mutate(mi, sigma)
+            if prob <= self.mutation_prob:
+                ind.mutate(sigma)
 
+    def run_generation(self):
+        self.evaluate()
+        self.selection()
+        self.crossover()
+        self.mutation(sigma=0.3)
+        self.population = self.parents + self.offspring
+
+        
 
 def GA(max_epochs, N, fitness, seed=None):
     
@@ -115,20 +122,16 @@ def GA(max_epochs, N, fitness, seed=None):
 
     dimension = fitness.dim()
 
-    # create population
-    population = Population(N, dimension, fitness)
-    
     cross_prob = 0.65
-    mut_prob = 0.1
-    
-    epoch = 0
-    
-    while epoch < max_epochs:
+    mut_prob = 0.05
 
-        population.selection()
-        population.crossover(cross_prob)
-        population.mutation(mut_prob)
-        population.evaluate()
+    # create population
+    population = Population(N, dimension, fitness, crossover_prob=cross_prob, mutation_prob=mut_prob)
+    population.evaluate()
+        
+    for epoch in range(max_epochs):
+
+        population.run_generation()
     
         if epoch % 10 == 0 and epoch > 1:
             size = population.size
@@ -137,8 +140,6 @@ def GA(max_epochs, N, fitness, seed=None):
             print_position(population.best_position)
             print("Size: {}".format(size))
 
-        epoch += 1
-    # while
     print("")
 
     return population.best_position
