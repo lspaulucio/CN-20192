@@ -80,14 +80,27 @@ class Population:
     def selection(self, selection_fraction=0.3):
 
         num_parents = int(selection_fraction * self.size)        
-        self.parents = sorted(self.population, key=lambda x: x.error)[:num_parents]
+        # self.parents = sorted(self.population, key=lambda x: x.error)[:num_parents]
+
+        parents = []
+        
+        for i in range(num_parents):
+            sample = list(np.random.choice(self.population, 2, replace=False))
+            if sample[0].error < sample[1].error:
+                parents.append(sample[0])
+            else:
+                parents.append(sample[1])
+
+        self.parents = parents
 
     
     def crossover(self):
-        num_offspring = self.size - len(self.parents)
+
+        # num_offspring = self.size - len(self.parents)
         new_offspring = []
 
-        for _ in range(num_offspring):
+        for _ in range(self.size):
+        # for _ in range(num_offspring):
             sample = list(np.random.choice(self.parents, 2, replace=False))
             beta = np.random.rand()
             ind1 = sample[0].cross(sample[1], beta)
@@ -112,7 +125,8 @@ class Population:
         self.selection()
         self.crossover()
         self.mutation(sigma=0.3)
-        self.population = self.parents + self.offspring
+        # self.population = self.parents + self.offspring
+        self.population = self.offspring
         self.evaluate()
 
         
@@ -150,9 +164,9 @@ def GA(max_epochs, N, fitness, seed=None):
 if __name__ == "__main__":
 
     fitness = F.Schwefel(dim=2)
-    epochs = 1000
+    epochs = 500
 
-    best_position = GA(epochs, 20, fitness)
+    best_position = GA(epochs, 50, fitness)
 
     print("Solution found after {} epochs".format(epochs))
     print_position(best_position)
