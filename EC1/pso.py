@@ -96,7 +96,7 @@ def PSO(max_epochs, n, fitness, seed=None):
 
 if __name__ == "__main__":
 
-    fitness = F.Test(dim=2)
+    fitness = F.Griewank(dim=2)
     epochs = 200
 
     best_position = PSO(epochs, 100, fitness)
