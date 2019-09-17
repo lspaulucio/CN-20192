@@ -20,7 +20,6 @@ class Individual:
         if position is None:
             self.position = (maxx - minx) * np.random.rand(dim) + minx
         else:
-            minx, maxx = fitness.search_space()
             position[position < minx] = minx
             position[position > maxx] = maxx
             self.position = position

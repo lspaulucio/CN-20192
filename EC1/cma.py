@@ -1,10 +1,6 @@
 import numpy as np
 import numpy.linalg as la
 
-from matplotlib import cm
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-
 from utils import print_position
 import functions as F
 
@@ -23,7 +19,7 @@ Based on https://github.com/jenkspt/CMA-ES
 
 """
 
-def cma(max_epochs, population_size, func_fitness, elite_size=25, sigma0=0.5):
+def CMA(max_epochs, population_size, func_fitness, elite_size=25, sigma0=0.5):
     low, high = func_fitness.search_space()
 
     d = func_fitness.dim()     # Dimensions
@@ -56,7 +52,7 @@ if __name__ == "__main__":
 
     epochs = 100
 
-    best_position = cma(epochs, 200, fitness)
+    best_position = CMA(epochs, 200, fitness)
 
     print("Solution found after {} epochs".format(epochs))
     print_position(best_position)
