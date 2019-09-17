@@ -13,15 +13,7 @@ import sys
 import copy
 import numpy as np
 import functions as F
-
-
-def print_position(position):
-    print("Best position: ", end="")
-    print("[ ", end="")
-    for i in range(len(position)):
-        print("%.4f" % position[i], end="") # 4 decimals
-        print(" ", end="")
-    print("]")
+from utils import print_position
 
 
 class Particle:
@@ -104,7 +96,7 @@ def PSO(max_epochs, n, fitness, seed=None):
 
 if __name__ == "__main__":
 
-    fitness = F.Griewank(dim=2)
+    fitness = F.Test(dim=2)
     epochs = 200
 
     best_position = PSO(epochs, 100, fitness)

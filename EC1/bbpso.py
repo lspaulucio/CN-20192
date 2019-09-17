@@ -11,16 +11,7 @@ import copy
 import random
 import numpy as np
 import functions as F
-
-
-def print_position(position):
-    print("Best position: ", end="")
-    print("[ ", end="")
-    for i in range(len(position)):
-        print("%.4f" % position[i], end="") # 4 decimals
-        print(" ", end="")
-    print("]")
-
+from utils import print_position
 
 class Particle:
     def __init__(self, dim, minx, maxx, fitness):
