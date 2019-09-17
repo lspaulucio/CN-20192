@@ -26,7 +26,7 @@ def CMA(max_epochs, population_size, func_fitness, elite_size=25, sigma0=0.5):
     n = population_size   # Population size
     k = elite_size        # Size of elite population
 
-    X = np.random.normal(0, 500, (d, n))
+    X = np.random.normal(0, 2, (d, n))
 
     for i in range(max_epochs):
         # Minimize this function

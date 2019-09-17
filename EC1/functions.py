@@ -34,8 +34,8 @@ class Ackley(Function):
         A = 20
         B = 0.2
         C = 2 * np.math.pi
-        s1 = np.square(X).mean(-1)
-        s2 = np.cos(C * X).mean(-1)
+        s1 = np.square(X).mean(axis=0)
+        s2 = np.cos(C * X).mean(axis=0)
         return -A * np.exp(-B * np.sqrt(s1)) - np.exp(s2) + A + np.exp(1)
     
     def search_space(self):
@@ -68,7 +68,7 @@ class Rastrigin(Function):
     
     def __call__(self, X, A=10):
         D = self.dim()
-        return A*D + np.sum(X**2 - A * np.cos(2 * np.math.pi * X), -1)
+        return A*D + np.sum(X**2 - A * np.cos(2 * np.math.pi * X), axis=0)
     
     def search_space(self):
         return (-5.12, 5.12)
@@ -113,7 +113,7 @@ class Schwefel(Function):
     def __call__(self, X):
         A = 418.9829
         D = self.dim()
-        s1 = np.sum(X * np.sin(np.sqrt(np.abs(X))), -1)
+        s1 = np.sum(X * np.sin(np.sqrt(np.abs(X))), axis=0)
         
         return A*D - s1
     
@@ -126,13 +126,15 @@ class Griewank(Function):
         super().__init__(dim)
 
     def __call__(self, X):
-        A = 4000
-        s1 = np.square(X).sum(-1) / A
-        denominator = [np.sqrt(i) for i in range(1, self.dim()+1)]
-        denominator = np.array(denominator)
-        s2 = np.prod(np.cos(X / denominator), -1)
-
-        return s1 - s2 + 1
+        D = self.dim()
+        sum = 0
+        prod = 1
+        for i in range(1, D+1):
+	        xi = X[i-1]
+	        sum = sum + xi**2 / 4000
+	        prod = prod * np.cos(xi/np.sqrt(i))
+        
+        return sum - prod + 1;       
         
     def search_space(self):
         return (-600, 600)
