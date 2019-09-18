@@ -11,13 +11,13 @@ import csv
 import json
 import numpy as np
 
-function_names = ["Ackley", "Rastrigin", "Rosenbrock", "Griewank", "Schwefel", "Langermann"]
+function_names = ["Ackley", "Rastrigin", "Rosenbrock", "Griewank", "Schwefel"]
 algorithms_names = ['PSO', 'BBPSO', 'GA', 'CMA-ES']
 
 def run_benchmark(num_tests, population_size, epochs, D):
     print("Starting Benchmark...")
     
-    functions = [Ackley(D), Rastrigin(D), Rosenbrock(D), Griewank(D), Schwefel(D), Langermann(D)]
+    functions = [Ackley(D), Rastrigin(D), Rosenbrock(D), Griewank(D), Schwefel(D)]
     results = {f:{a:[] for a in algorithms_names} for f in function_names}
     for fitness in functions:
         for i in range(num_tests):
@@ -59,17 +59,19 @@ def save_csv(results, filename):
 
 if __name__ == "__main__":
     
-    num_tests = 50
-    population_size = 100
-    epochs = 100
-    dimensions = [2, 3, 10, 20, 30]
-    
-    for dim in dimensions:
-        results = run_benchmark(num_tests, population_size, epochs, dim)
-        save_results_json(results, filename='results/results_{}.json'.format(dim))    
-        compiled = compile_results('results/results_{}.json'.format(dim))
-        save_csv(compiled, 'results/compiled_results_{}.csv'.format(dim))
+    # num_tests = 50
+    # population_size = 100
+    # epochs = 100
+    # dimensions = [2, 3, 10, 20, 30]
+    # 
+    # for dim in dimensions:
+        # results = run_benchmark(num_tests, population_size, epochs, dim)
+        # save_results_json(results, filename='results/results_{}.json'.format(dim))    
+        # compiled = compile_results('results/results_{}.json'.format(dim))
+        # save_csv(compiled, 'results/compiled_results_{}.csv'.format(dim))
 
+    compiled = compile_results('results/results_2.json')
+    save_csv(compiled, 'results/compiled_results_2.csv')
 
    
 

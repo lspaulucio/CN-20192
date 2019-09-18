@@ -1,6 +1,6 @@
 Function,Algorithm,Best,Worst,Mean,Std
-Ackley,CMA-ES,nan,nan,nan,nan
-Rastrigin,CMA-ES,nan,nan,nan,nan
-Rosenbrock,CMA-ES,nan,nan,nan,nan
-Griewank,CMA-ES,nan,nan,nan,nan
-Schwefel,CMA-ES,nan,nan,nan,nan
+Ackley,CMA-ES,0.0005,0.8686,0.0749,0.1491
+Rastrigin,CMA-ES,4.0614,23.0093,11.2902,5.1144
+Rosenbrock,CMA-ES,5.6277,12.3574,8.5512,1.3122
+Griewank,CMA-ES,0.0,0.0032,0.0005,0.0009
+Schwefel,CMA-ES,4150.3764,4151.0494,4150.5975,0.1923
