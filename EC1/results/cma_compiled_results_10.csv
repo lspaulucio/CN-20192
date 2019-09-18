@@ -1,0 +1,6 @@
+Function,Algorithm,Best,Worst,Mean,Std
+Ackley,CMA-ES,nan,nan,nan,nan
+Rastrigin,CMA-ES,nan,nan,nan,nan
+Rosenbrock,CMA-ES,nan,nan,nan,nan
+Griewank,CMA-ES,nan,nan,nan,nan
+Schwefel,CMA-ES,nan,nan,nan,nan

@@ -35,8 +35,10 @@ def CMA(max_epochs, population_size, func_fitness, elite_size=25, sigma0=0.5):
         topk = X[:, arg_topk]
         print('Iter {}, score {}, X = {}'.format(i, fitness[arg_topk[0]], X[:,arg_topk[0]]))
         # Covariance of topk but using mean of entire population
+        X[np.isnan(X)] = 0 
         centered = topk - X.mean(1, keepdims=True)
         C = (centered @ centered.T)/(k-1)
+        C[np.isnan(C)] = 0 
         # Eigenvalue decomposition
         w, E = la.eigh(C)
         # Generate new population
