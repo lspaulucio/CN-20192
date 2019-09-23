@@ -45,6 +45,8 @@ def compile_results(results, filename):
                 mean = r.mean()
                 std = r.std()
                 data[f][a] = [best, worst, mean, std]
+    
+    
 
 if __name__ == "__main__":
     
