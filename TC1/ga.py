@@ -111,6 +111,18 @@ class Population:
         self.mutation()
         self.update_population()
 
+    def __iter__(self):
+        self.sentinel = 0
+        return self
+
+    def __next__(self):
+        if self.sentinel < self.size:
+            ind = self.population[self.sentinel]
+            self.sentinel += 1
+            return ind
+        else:
+            raise StopIteration
+
 def BinaryGA(max_epochs, N, fitness, seed=None):
     
     if seed is not None:
