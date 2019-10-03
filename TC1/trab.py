@@ -44,7 +44,9 @@ if __name__ == "__main__":
                             dimension=NUM_FEATURES, 
                             fitness=fitness_func, 
                             crossover_prob=CROSSOVER_PROB, 
-                            mutation_prob=MUTATION_PROB)
+                            mutation_prob=MUTATION_PROB,
+                            elitism=True,
+                            sel_frac=0.3)
 
     for epoch in range(NUM_EPOCHS):
 
