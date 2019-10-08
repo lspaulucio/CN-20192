@@ -8,15 +8,14 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-
 def Arrhythmia():
-    features = ["Cultivator", "Alchol", "Malic_Acid", "Ash", "Alcalinity_of_Ash", "Magnesium", "Total_phenols", 
-                "Falvanoids", "Nonflavanoid_phenols", "Proanthocyanins", "Color_intensity", "Hue", "OD280", "Proline"]
-    
-    arr = pd.read_csv('data/arrhythmia.arrhythmia.data', names=features)
+    features = ["Feature_{}".format(str(i)) for i in range(279)]
+    features += ['class']
+    arr = pd.read_csv('data/arrhythmia/arrhythmia.data', names=features)
+    arr = arr.replace('?', 0)
     scaler = StandardScaler()
-    x = arr.drop(columns=['Cultivator'])
-    y = arr['Cultivator']
+    x = arr.drop(columns=['class'])
+    y = arr['class']
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
     scaler.fit(x_train)
     x_train = scaler.transform(x_train)
@@ -27,13 +26,13 @@ def Arrhythmia():
 
 def Ionosphere():
     features = ['Feature_{}'.format(str(i)) for i in range(34)]
-    features += ['label'] # last column is the label
-    label_map = {'g':0, 'b':1}
+    features += ['class'] # last column is the class
+    class_map = {'g':0, 'b':1}
     ionosphere = pd.read_csv('data/ionosphere/ionosphere.data', names=features)
-    ionosphere['label'] = ionosphere['label'].map(label_map)
+    ionosphere['class'] = ionosphere['class'].map(class_map)
     scaler = StandardScaler()
-    x = ionosphere.drop(columns=['label'])
-    y = ionosphere['label']
+    x = ionosphere.drop(columns=['class'])
+    y = ionosphere['class']
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
     scaler.fit(x_train)
     x_train = scaler.transform(x_train)
@@ -43,12 +42,12 @@ def Ionosphere():
 
 
 def Wine():
-    features = ["Cultivator", "Alchol", "Malic_Acid", "Ash", "Alcalinity_of_Ash", "Magnesium", "Total_phenols", 
+    features = ["Class", "Alchol", "Malic_Acid", "Ash", "Alcalinity_of_Ash", "Magnesium", "Total_phenols", 
                 "Falvanoids", "Nonflavanoid_phenols", "Proanthocyanins", "Color_intensity", "Hue", "OD280", "Proline"]
     wine = pd.read_csv('data/wine/wine.data', names=features)
     scaler = StandardScaler()
-    x = wine.drop(columns=['Cultivator'])
-    y = wine['Cultivator']
+    x = wine.drop(columns=['Class'])
+    y = wine['Class']
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
     scaler.fit(x_train)
     x_train = scaler.transform(x_train)

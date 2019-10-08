@@ -25,12 +25,12 @@ def classifierArrhythmia():
     
     # Hyperparameters
     NUM_EPOCHS = 500
-    NUM_FEATURES = 13
-    NUM_CLASSES = 3
+    NUM_FEATURES = 279
+    NUM_CLASSES = 16
     HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     LEARNING_RATE = 1e-3
 
-    x_train, y_train, x_test, y_test = Wine()
+    x_train, y_train, x_test, y_test = Arrhythmia()
 
     model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, SEED, verbose=True)
 
@@ -39,7 +39,7 @@ def classifierArrhythmia():
 
     cm = confusion_matrix(y_test, y_pred)
     print(cm)
-    print(classification_report(y_test, y_pred))
+    print(classification_report(y_test, y_pred, digits=4))
     sns.heatmap(cm, center=True, annot=True, cmap="Blues")
     plt.title("Matriz de Confusão")
     plt.ylabel('True Label')
@@ -71,7 +71,7 @@ def classifierIonosphere():
 
     cm = confusion_matrix(y_test, y_pred)
     print(cm)
-    print(classification_report(y_test, y_pred))
+    print(classification_report(y_test, y_pred, digits=4))
     sns.heatmap(cm, center=True, annot=True, cmap="Blues")
     plt.title("Matriz de Confusão")
     plt.ylabel('True Label')
@@ -101,9 +101,16 @@ def classifierWine():
 
     cm = confusion_matrix(y_test, y_pred)
     print(cm)
-    print(classification_report(y_test, y_pred))
+    print(classification_report(y_test, y_pred, digits=4))
     sns.heatmap(cm, center=True, annot=True, cmap="Blues")
     plt.title("Matriz de Confusão")
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
     plt.show()
+
+
+if __name__ == "__main__":
+
+    classifierArrhythmia()
+    classifierIonosphere()
+    classifierWine()

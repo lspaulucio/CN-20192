@@ -23,3 +23,22 @@ def print_position(position):
         print("%.4f" % position[i], end="") # 4 decimals
         print(" ", end="")
     print("]")
+
+
+def sampleFromClass(ds, k):
+    class_counts = {i:0 for i in range(len(k))}
+    all_ids = set(range(len(ds)))
+    test_ids = set()
+    
+    for i, (_, label) in enumerate(ds):
+        c = label
+        if class_counts[c] <= k[c]: 
+            class_counts[c] = class_counts.get(c,0) + 1 
+            test_ids.add(i) 
+
+    train_ids = list(all_ids - test_ids)
+    train_ids.sort()
+    test_ids = list(test_ids)
+    test_ids.sort()
+    print("Generating subsets")
+    return Subset(ds, train_ids), Subset(ds, test_ids)
