@@ -5,15 +5,16 @@
 # Computacional Assignment 1
 # Classifier Implementation
 
-import torch
-import torch.nn as nn
+from sklearn.neural_network import MLPClassifier
 
-class Classifier(nn.Module):
-    def __init__(self, input_size, hidden_size, num_classes):
-        super(Classifier, self).__init__()
-        self.hidden = nn.Linear(input_size, hidden_size)
-        self.output = nn.Linear(hidden_size, num_classes)
+def Classifier(hidden_size, learning_rate, epochs, seed, verbose=False):
+    model = MLPClassifier(hidden_layer_sizes=hidden_size, 
+                          activation='relu',
+                          solver='adam',
+                          learning_rate_init=learning_rate,
+                          max_iter=epochs,
+                          random_state=seed,
+                          verbose=verbose
+                          )
 
-    def forward(self, x):
-        return self.output(self.hidden(x))
-
+    return model

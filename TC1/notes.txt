@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+# Aluno: Leonardo Santos Paulucio
+# Data: 15/10/19
+# Natural Computing - 2019/2
+# Computacional Assignment 1
+
+import os
+import wget
+
+class Arrhythmia():
+    urls = [
+        'https://archive.ics.uci.edu/ml/machine-learning-databases/arrhythmia/arrhythmia.data',
+        'https://archive.ics.uci.edu/ml/machine-learning-databases/arrhythmia/arrhythmia.names'
+        ]
+
+    def __init__(self, root_folder='data/Arrhythmia', filename='arrhythmia.data', download=True):
+        self.root_folder = root_folder
+        self.filename = filename
+        self.raw_data = 'raw'
+        self.processed_data = 'processed'
+        if download:
+            self.download()
+
+    def _check_exists(self, path):
+        return os.path.exists(path)
+        # os.path.join(self.root_folder, self.file)v
+
+    def download(self):
+        if self._check_exists(os.path.join(self.root_folder, self.filename)):
+            return
+
+        if not self._check_exists(self.root_folder):
+            os.mkdir(self.root_folder)
+
+        # download files
+        for url in self.urls:
+            wget.download(url, self.root_folder)
+
+            
+# def Wine():
+#     https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data
+#     https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.names
+
+
+# def Ionosphere():
+#     https://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/ionosphere.data
+#     https://archive.ics.uci.edu/ml/machine-learning-databases/ionosphere/ionosphere.names
+
+
+if __name__ == "__main__":
+    g = Arrhythmia()
