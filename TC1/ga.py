@@ -7,6 +7,7 @@
 
 import numpy as np
 from utils import print_position
+from copy import deepcopy
 
 class Individual:
     def __init__(self, dim):
@@ -53,8 +54,8 @@ class Population:
     def evaluate(self):
         for ind in self.population:
             if ind.error < self.best_error:
-                self.best_error = ind.error
-                self.best_individual = ind
+                self.best_error = deepcopy(ind.error)
+                self.best_individual = deepcopy(ind)
 
     def selection(self):
         # Tournament selection
@@ -71,7 +72,6 @@ class Population:
         self.parents = parents
     
     def crossover(self):
-        print(len(self.parents))
         if self.elitism:
             num_offspring = self.size - len(self.parents)
         else:

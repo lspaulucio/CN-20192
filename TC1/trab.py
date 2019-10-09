@@ -13,8 +13,6 @@
 
 import numpy as np
 import random
-from tqdm import tqdm
-
 from utils import Fitness, print_position
 from ga import Population
 
@@ -35,7 +33,7 @@ if __name__ == "__main__":
     np.random.seed(SEED)
     
     # Parameters
-    NUM_RUNS = 20
+    NUM_RUNS = 1
     NUM_GENERATIONS = 50
 
     NUM_EPOCHS = 500
@@ -60,8 +58,7 @@ if __name__ == "__main__":
     # Loading dataset
     x_train, y_train, x_test, y_test = Wine()
 
-    for i in range(NUM_RUNS):
-        print("Running step: %d" % i + 1)
+    for step in range(NUM_RUNS):
         
         population = Population(size=POPULATION_SIZE, 
                             dimension=NUM_FEATURES, 
@@ -72,9 +69,7 @@ if __name__ == "__main__":
                             sel_frac=0.2)
 
         for generation in range(NUM_GENERATIONS):
-
-            print("Generation number: %d" % generation + 1)
-
+            
             for ind in population:
                 feature_mask = ind.chromosome
                 x_tr = feature_mask * x_train
@@ -88,8 +83,11 @@ if __name__ == "__main__":
             
             population.evaluate()
             population.new_generation()
-            print("Best individue fitness: %.4f\nNumber of features selected: %d \nScore: %.3f" % (population.best_error, 
-                                                                                                   population.best_individual.features, 
-                                                                                                   population.best_individual.score))
+            
+            print("Running step: %d" % (step + 1))
+            print("Generation number: %d" % (generation + 1))
+            print("Best individue fitness: %.4f\nNumber of features selected: %d \nScore: %.3f\n" % (population.best_error, 
+                                                                                                     population.best_individual.features, 
+                                                                                                     population.best_individual.score))
 
 
