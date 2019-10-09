@@ -11,17 +11,19 @@
         - - - - - - -          Loss             - - - - - - -
 """ 
 
-import numpy as np
+import time
 import random
-from utils import Fitness, print_position
-from ga import Population
+import warnings
+import numpy as np
 
+from ga import Population
+from classifiers import NeuralClassifier, ELM
+from utils import Fitness, print_position
 from datasets import Arrhythmia, Ionosphere, Wine
+
 from sklearn.metrics import confusion_matrix, f1_score, recall_score
-from classifier import Classifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.exceptions import ConvergenceWarning
-import warnings
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
@@ -68,12 +70,14 @@ if __name__ == "__main__":
                             sel_frac=0.2)
 
         for generation in range(NUM_GENERATIONS):
+
+            start_time = time.time()
             
             for ind in population:
                 feature_mask = ind.chromosome
                 x_tr = feature_mask * x_train
                 x_ts = feature_mask * x_test
-                model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
+                model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
                 model.fit(x_train, y_train)
                 score = model.score(x_ts, y_test)
                 error = 1 - score
@@ -88,5 +92,7 @@ if __name__ == "__main__":
             print("Best individue fitness: %.4f\nNumber of features selected: %d \nScore: %.3f\n" % (population.best_error, 
                                                                                                      population.best_individual.features, 
                                                                                                      population.best_individual.score))
+            end_time = time.time()
+            exec_time = end_time - start_time
 
 

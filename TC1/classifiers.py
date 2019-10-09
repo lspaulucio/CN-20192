@@ -8,7 +8,7 @@
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 
-def Classifier(hidden_size, learning_rate, epochs, verbose=False):
+def NeuralClassifier(hidden_size, learning_rate, epochs, verbose=False):
     model = MLPClassifier(hidden_layer_sizes=hidden_size, 
                           activation='relu',
                           solver='adam',
