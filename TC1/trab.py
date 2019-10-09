@@ -39,9 +39,12 @@ if __name__ == "__main__":
     NUM_EPOCHS = 500
     
     # Features - Arrhythmia 279, Ionosphere 34, Wine 13
-    NUM_FEATURES = 13
+    NUM_FEATURES = 34
     # Classes - Arrhythmia 16, Ionosphere 2, Wine 3
-    NUM_CLASSES = 3
+    NUM_CLASSES = 2
+
+    # Loading dataset
+    x_train, y_train, x_test, y_test = Ionosphere()
     
     HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     POPULATION_SIZE = 10
@@ -52,12 +55,8 @@ if __name__ == "__main__":
     # Training parameters
     LEARNING_RATE = 1e-3
 
-
     fitness_func = Fitness(NUM_FEATURES, ro=RO)
     
-    # Loading dataset
-    x_train, y_train, x_test, y_test = Wine()
-
     for step in range(NUM_RUNS):
         
         population = Population(size=POPULATION_SIZE, 

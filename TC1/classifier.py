@@ -22,7 +22,7 @@ def Classifier(hidden_size, learning_rate, epochs, verbose=False):
 
 # Based on Iván Vallés Pérez implementation available on https://github.com/ivallesp/simplestELM
 
-class ELMRegressor():
+class ELM():
     def __init__(self, n_hidden_units):
         self.n_hidden_units = n_hidden_units
 
