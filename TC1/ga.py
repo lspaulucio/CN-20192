@@ -15,11 +15,12 @@ class Individual:
         self.features = 0       
         self.chromosome = np.random.randint(low=0, high=2, size=dim)
         self.update_features()
+        self.score = 0
 
     def update_features(self):
         self.features = (self.chromosome == 1).sum()
 
-    def cross(self, other, cross_prob):
+    def cross(self, other):
         pos = np.random.randint(0, self.dim) # cut point
         new = Individual(self.dim)
         new.chromosome[pos:] = other.chromosome[pos:]
@@ -44,17 +45,16 @@ class Population:
         self.population = [Individual(dimension) for _ in range(size)]
         self.parents = []
         self.offspring = []
-        self.best_individual = self.population[0].chromosome  # initializing
+        self.best_individual = self.population[0]             # initializing
         self.best_error = self.population[0].error            # initializing
         self.elitism = elitism
         self.selection_fraction = sel_frac
 
-    def evaluate(self, error):
+    def evaluate(self):
         for ind in self.population:
-            ind.evaluate(self.fitness, error)
             if ind.error < self.best_error:
                 self.best_error = ind.error
-                self.best_position = ind.position
+                self.best_individual = ind
 
     def selection(self):
         # Tournament selection
@@ -71,7 +71,7 @@ class Population:
         self.parents = parents
     
     def crossover(self):
-        
+        print(len(self.parents))
         if self.elitism:
             num_offspring = self.size - len(self.parents)
         else:
@@ -105,7 +105,7 @@ class Population:
     def update_population(self):
         self.population = self.offspring
 
-    def run_generation(self):
+    def new_generation(self):
         self.selection()
         self.crossover()
         self.mutation()
@@ -139,7 +139,7 @@ def BinaryGA(max_epochs, N, fitness, seed=None):
         
     for epoch in range(max_epochs):
 
-        population.run_generation()
+        population.new_generation()
     
         if epoch % 10 == 0 and epoch > 1:
             size = population.size

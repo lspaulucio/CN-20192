@@ -18,11 +18,14 @@ from tqdm import tqdm
 from utils import Fitness, print_position
 from ga import Population
 
+from datasets import Arrhythmia, Ionosphere, Wine
 from sklearn.metrics import confusion_matrix, f1_score, recall_score
 from classifier import Classifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.exceptions import ConvergenceWarning
+import warnings
 
-# cm=confusionmatrix
-# sns.heatmap(cm, center=True)
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 if __name__ == "__main__":
 
@@ -31,11 +34,18 @@ if __name__ == "__main__":
     random.seed(SEED)
     np.random.seed(SEED)
     
-    # Hyperparameters
-    NUM_EPOCHS = 50
-    NUM_FEATURES = 10
-    NUM_CLASSES = 5
-    HIDDEN_SIZE = np.sqrt(NUM_FEATURES * NUM_CLASSES)
+    # Parameters
+    NUM_RUNS = 20
+    NUM_GENERATIONS = 50
+
+    NUM_EPOCHS = 500
+    
+    # Features - Arrhythmia 279, Ionosphere 34, Wine 13
+    NUM_FEATURES = 13
+    # Classes - Arrhythmia 16, Ionosphere 2, Wine 3
+    NUM_CLASSES = 3
+    
+    HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     POPULATION_SIZE = 10
     MUTATION_PROB = 0.1
     CROSSOVER_PROB = 0.9
@@ -44,16 +54,42 @@ if __name__ == "__main__":
     # Training parameters
     LEARNING_RATE = 1e-3
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, SEED)
-    
+
     fitness_func = Fitness(NUM_FEATURES, ro=RO)
     
-    population = Population(size=POPULATION_SIZE, 
+    # Loading dataset
+    x_train, y_train, x_test, y_test = Wine()
+
+    for i in range(NUM_RUNS):
+        print("Running step: %d" % i + 1)
+        
+        population = Population(size=POPULATION_SIZE, 
                             dimension=NUM_FEATURES, 
                             fitness=fitness_func, 
                             crossover_prob=CROSSOVER_PROB, 
                             mutation_prob=MUTATION_PROB,
                             elitism=True,
-                            sel_frac=0.3)
+                            sel_frac=0.2)
+
+        for generation in range(NUM_GENERATIONS):
+
+            print("Generation number: %d" % generation + 1)
+
+            for ind in population:
+                feature_mask = ind.chromosome
+                x_tr = feature_mask * x_train
+                x_ts = feature_mask * x_test
+                model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
+                model.fit(x_train, y_train)
+                score = model.score(x_ts, y_test)
+                error = 1 - score
+                ind.evaluate(fitness_func, error)
+                ind.score = score
+            
+            population.evaluate()
+            population.new_generation()
+            print("Best individue fitness: %.4f\nNumber of features selected: %d \nScore: %.3f" % (population.best_error, 
+                                                                                                   population.best_individual.features, 
+                                                                                                   population.best_individual.score))
 
 

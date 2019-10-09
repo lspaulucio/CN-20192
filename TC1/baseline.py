@@ -15,13 +15,12 @@ from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# Setting seed for reproducibility
+SEED = 500
+random.seed(SEED)
+np.random.seed(SEED)
 
 def classifierArrhythmia():
-
-    # Setting seed for reproducibility
-    SEED = 500
-    random.seed(SEED)
-    np.random.seed(SEED)
     
     # Hyperparameters
     NUM_EPOCHS = 500
@@ -32,7 +31,7 @@ def classifierArrhythmia():
 
     x_train, y_train, x_test, y_test = Arrhythmia()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, SEED, verbose=True)
+    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
@@ -50,11 +49,6 @@ def classifierArrhythmia():
 
 def classifierIonosphere():
 
-    # Setting seed for reproducibility
-    SEED = 500
-    random.seed(SEED)
-    np.random.seed(SEED)
-    
     # Hyperparameters
     NUM_EPOCHS = 500
     NUM_FEATURES = 34
@@ -64,7 +58,7 @@ def classifierIonosphere():
 
     x_train, y_train, x_test, y_test = Ionosphere()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, SEED, verbose=True)
+    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
@@ -80,10 +74,6 @@ def classifierIonosphere():
 
 
 def classifierWine():
-    # Setting seed for reproducibility
-    SEED = 500
-    random.seed(SEED)
-    np.random.seed(SEED)
     
     # Hyperparameters
     NUM_EPOCHS = 500
@@ -94,7 +84,7 @@ def classifierWine():
 
     x_train, y_train, x_test, y_test = Wine()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, SEED, verbose=True)
+    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
