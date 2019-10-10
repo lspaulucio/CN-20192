@@ -22,6 +22,9 @@ def NeuralClassifier(hidden_size, learning_rate, epochs, verbose=False):
 
 # Based on Iván Vallés Pérez implementation available on https://github.com/ivallesp/simplestELM
 
+def sigmoid(X):
+    return 1 / (1 + np.exp(-X))
+
 class ELM():
     def __init__(self, n_hidden_units):
         self.n_hidden_units = n_hidden_units
@@ -36,3 +39,7 @@ class ELM():
         X = np.column_stack([X, np.ones([X.shape[0], 1])])
         G = np.tanh(X.dot(self.random_weights))
         return G.dot(self.w_elm)
+
+    def score(self, X, y_true):
+        y_pred = self.predict(X)
+        return (y_pred == y_true).sum() / len(y_true)
