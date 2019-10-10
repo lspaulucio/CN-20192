@@ -37,15 +37,15 @@ if __name__ == "__main__":
     # Parameters
     NUM_RUNS = 1
     NUM_GENERATIONS = 50
-    NUM_EPOCHS = 50
+    NUM_EPOCHS = 20
     
     # Features - Arrhythmia 279, Ionosphere 34, Wine 13
-    NUM_FEATURES = 13
+    NUM_FEATURES = 279
     # Classes - Arrhythmia 16, Ionosphere 2, Wine 3
-    NUM_CLASSES = 3
+    NUM_CLASSES = 16
 
     # Loading dataset
-    x_train, y_train, x_test, y_test = Wine()
+    x_train, y_train, x_test, y_test = Arrhythmia()
     
     HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     POPULATION_SIZE = 10
@@ -79,7 +79,8 @@ if __name__ == "__main__":
                 x_tr = feature_mask * x_train
                 x_ts = feature_mask * x_test
                 model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
-                model.fit(x_train, y_train)
+                model = ELM(HIDDEN_SIZE)
+                model.fit(x_tr, y_train)
                 score = model.score(x_ts, y_test)
                 error = 1 - score
                 ind.evaluate(fitness_func, error)
