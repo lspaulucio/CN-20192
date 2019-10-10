@@ -37,16 +37,15 @@ if __name__ == "__main__":
     # Parameters
     NUM_RUNS = 1
     NUM_GENERATIONS = 50
-
-    NUM_EPOCHS = 500
+    NUM_EPOCHS = 50
     
     # Features - Arrhythmia 279, Ionosphere 34, Wine 13
-    NUM_FEATURES = 34
+    NUM_FEATURES = 13
     # Classes - Arrhythmia 16, Ionosphere 2, Wine 3
-    NUM_CLASSES = 2
+    NUM_CLASSES = 3
 
     # Loading dataset
-    x_train, y_train, x_test, y_test = Ionosphere()
+    x_train, y_train, x_test, y_test = Wine()
     
     HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     POPULATION_SIZE = 10
@@ -59,6 +58,9 @@ if __name__ == "__main__":
 
     fitness_func = Fitness(NUM_FEATURES, ro=RO)
     
+    individuals = []
+    times = []
+
     for step in range(NUM_RUNS):
         
         population = Population(size=POPULATION_SIZE, 
@@ -66,7 +68,6 @@ if __name__ == "__main__":
                             fitness=fitness_func, 
                             crossover_prob=CROSSOVER_PROB, 
                             mutation_prob=MUTATION_PROB,
-                            elitism=True,
                             sel_frac=0.2)
 
         for generation in range(NUM_GENERATIONS):
@@ -92,7 +93,8 @@ if __name__ == "__main__":
             print("Best individue fitness: %.4f\nNumber of features selected: %d \nScore: %.3f\n" % (population.best_error, 
                                                                                                      population.best_individual.features, 
                                                                                                      population.best_individual.score))
+            
             end_time = time.time()
             exec_time = end_time - start_time
-
-
+            individuals.append(population.best_individual)
+            times.append(exec_time)
