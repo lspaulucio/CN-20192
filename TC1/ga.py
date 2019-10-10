@@ -37,7 +37,7 @@ class Individual:
         self.error = fitness(error, self.features)
 
 class Population:
-    def __init__(self, size, dimension, fitness, crossover_prob=0.65, mutation_prob=0.1, elitism=True, sel_frac=0.3):
+    def __init__(self, size, dimension, fitness, crossover_prob=0.65, mutation_prob=0.1, sel_frac=0.3):
         self.crossover_prob = crossover_prob
         self.mutation_prob = mutation_prob
         self.dim = dimension
@@ -48,7 +48,6 @@ class Population:
         self.offspring = []
         self.best_individual = self.population[0]             # initializing
         self.best_error = self.population[0].error            # initializing
-        self.elitism = elitism
         self.selection_fraction = sel_frac
 
     def evaluate(self):
@@ -72,10 +71,7 @@ class Population:
         self.parents = parents
     
     def crossover(self):
-        if self.elitism:
-            num_offspring = self.size - len(self.parents)
-        else:
-            num_offspring = self.size
+        num_offspring = self.size
         
         new_offspring = []
 
@@ -92,10 +88,7 @@ class Population:
             new_offspring.append(ind1)
             new_offspring.append(ind2)
 
-        if self.elitism:
-            self.offspring = self.parents + new_offspring
-        else:    
-            self.offspring = new_offspring
+        self.offspring = new_offspring
         
     def mutation(self):
         for ind in self.offspring:
