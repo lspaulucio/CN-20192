@@ -44,7 +44,6 @@ def classifierArrhythmia():
     plt.ylabel('True Label')
     plt.xlabel('Predicted Label')
     plt.show()    
-    print(model.score(x_test, y_test))
 
 
 def classifierIonosphere():
@@ -101,6 +100,6 @@ def classifierWine():
 
 if __name__ == "__main__":
 
-    # classifierArrhythmia()
-    # classifierIonosphere()
-    # classifierWine()
+    classifierArrhythmia()
+    classifierIonosphere()
+    classifierWine()
