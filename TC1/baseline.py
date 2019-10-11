@@ -8,7 +8,7 @@ import numpy as np
 import random
 from tqdm import tqdm
 
-from classifier import Classifier
+from classifiers import NeuralClassifier
 from datasets import  Arrhythmia, Ionosphere, Wine
 
 from sklearn.metrics import confusion_matrix, classification_report
@@ -31,7 +31,7 @@ def classifierArrhythmia():
 
     x_train, y_train, x_test, y_test = Arrhythmia()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
+    model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
@@ -58,7 +58,7 @@ def classifierIonosphere():
 
     x_train, y_train, x_test, y_test = Ionosphere()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
+    model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
@@ -84,7 +84,7 @@ def classifierWine():
 
     x_train, y_train, x_test, y_test = Wine()
 
-    model = Classifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
+    model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS, verbose=True)
 
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
@@ -101,6 +101,6 @@ def classifierWine():
 
 if __name__ == "__main__":
 
-    classifierArrhythmia()
-    classifierIonosphere()
-    classifierWine()
+    # classifierArrhythmia()
+    # classifierIonosphere()
+    # classifierWine()
