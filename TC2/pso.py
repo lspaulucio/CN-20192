@@ -12,17 +12,14 @@
 import sys
 import copy
 import numpy as np
-import functions as F
-from utils import print_position
-
 
 class Particle:
-    def __init__(self, dim, minx, maxx, fitness):
+    def __init__(self, dim, minx, maxx):
         self.position = (maxx - minx) * np.random.rand(dim) + minx
         self.velocity = (maxx - minx) * np.random.rand(dim) + minx
-        self.error = fitness(self.position)  # curr error
         self.pbest_position = self.position
         self.pbest_value = float('inf')
+        self.error = float('inf')
         self.pbest_err = self.error  # best error
 
 def PSO(max_epochs, n, fitness, seed=None):
@@ -92,15 +89,3 @@ def PSO(max_epochs, n, fitness, seed=None):
     # while
     print("")
     return best_swarm_pos
-
-
-if __name__ == "__main__":
-
-    fitness = F.Griewank(dim=2)
-    epochs = 200
-
-    best_position = PSO(epochs, 100, fitness)
-
-    print("Solution found after {} epochs".format(epochs))
-    print_position(best_position)
-    print("Best error: {:.3f}".format(fitness(best_position)))

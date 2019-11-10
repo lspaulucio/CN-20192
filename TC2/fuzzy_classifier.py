@@ -55,6 +55,10 @@ class IrisFuzzyClassifier():
 
         return y_pred
 
+    def score(self, x_test, y_true):
+        y_pred = self.predict(x_test)
+        return (y_true == y_pred).sum()/len(y_true)
+
     def evaluate(self, x1, x2, x3, x4):
         # R1 : IF x1_short or x1_ong and 
         #         x2_middle or x2_long and 
