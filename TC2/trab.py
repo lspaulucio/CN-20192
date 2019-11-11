@@ -175,6 +175,6 @@ if __name__ == "__main__":
     random.seed(SEED)
     np.random.seed(SEED)
 
-    # GA()
+    GA()
     PSO()
     
