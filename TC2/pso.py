@@ -31,7 +31,7 @@ def PSO(max_epochs, n, fitness, seed=None):
     minx, maxx = fitness.search_space()
 
     # create n random particles
-    swarm = [Particle(dim, minx, maxx, fitness) for i in range(n)]
+    swarm = [Particle(dim, minx, maxx) for i in range(n)]
 
     best_swarm_pos = [0.0 for i in range(dim)]  # not necess.
     best_swarm_err = sys.float_info.max  # swarm best
