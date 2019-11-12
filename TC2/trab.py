@@ -93,8 +93,6 @@ def PSO():
     data = normalize(iris.data)
     y_true = iris.target
 
-
-    epoch = 0
     chi = 0.7298    # inertia
     c1 = 2.05       # cognitive (particle)
     c2 = 2.05       # social (swarm)
