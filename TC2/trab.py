@@ -93,8 +93,6 @@ def PSO():
     data = normalize(iris.data)
     y_true = iris.target
 
-
-    epoch = 0
     chi = 0.7298    # inertia
     c1 = 2.05       # cognitive (particle)
     c2 = 2.05       # social (swarm)
@@ -156,14 +154,14 @@ def PSO():
                 print("Best individue fitness: %.4f\nScore: %.3f" % (best_swarm_err, 
                                                                     1 - best_swarm_err))
 
-            exec_time = time.time() - start_time
-            positions.append(best_swarm_pos)
-            errors.append(best_swarm_err)
-            times.append(exec_time)
+        exec_time = time.time() - start_time
+        positions.append(best_swarm_pos)
+        errors.append(best_swarm_err)
+        times.append(exec_time)
 
     info = {'positions': positions,
             'errors': errors,
-            'times': times}
+            'time': times}
     
     with open("results/iris_fuzzy_pso.pickle", "wb") as f:
         pickle.dump(info, f)
