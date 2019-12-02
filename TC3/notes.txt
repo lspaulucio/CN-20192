@@ -1,0 +1,81 @@
+# HIDDEN_SIZE: Arrhythmia 67
+#              Ionosphere 9
+#              Wine       7
+
+# Features - Arrhythmia 279, Ionosphere 34, Wine 13
+# Classes - Arrhythmia 16, Ionosphere 2, Wine 3
+
+# wine 
+# array([1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1])
+# features = 0, 3, 5, 8, 9, 10, 12 - 7
+
+# Ionosphere 
+# array([1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1])
+# array([0, 1, 2, 4, 6, 7, 9, 10, 11, 13, 15, 17, 18, 22, 23, 27, 28, 30, 33]) 19
+
+# Arrithmia 132
+[1, 2, 6, 8, 9, 12, 13, 15, 20, 21, 23, 25, 26, 27, 29, 30, 31, 35, 37, 39, 44, 45, 50, 51, 55, 57, 62, 63, 64, 65, 67, 72, 74, 75, 76, 77,
+ 80, 81,86, 89, 90, 91,92, 94, 96, 97, 101, 102, 104, 105, 108, 109, 110, 114, 115, 116, 117, 118, 120, 121, 122, 123, 124, 125, 128, 129,
+ 130, 131, 135, 136, 138, 139, 141, 142, 143, 146, 147, 148, 150, 156, 157, 158, 159, 160, 164, 166, 177, 178, 179, 181, 185, 186, 188, 191,
+ 195, 196, 197, 198, 199, 200, 206, 207, 210, 211, 216, 217, 220, 221, 222, 225, 226, 229, 231, 233, 235, 239, 241, 242, 244, 249, 250, 251,
+ 260, 261, 264,265, 266, 267, 271, 272, 277, 278]
+
+
+Dataset: wine
+Execution time:
+Mean: 3.833, Worst: 3.792, Better: 3.871
+Classifier accuracy:
+Mean: 0.926, Worst: 0.833, Better: 1.000
+Jaccard Score: 0.399
+
+Wine
+
+              precision    recall  f1-score   support
+
+           1       1.00      1.00      1.00         7
+           2       1.00      1.00      1.00         7
+           3       1.00      1.00      1.00         4
+
+    accuracy                           1.00        18
+   macro avg       1.00      1.00      1.00        18
+weighted avg       1.00      1.00      1.00        18
+
+Dataset: ionosphere
+Execution time:
+Mean: 4.756, Worst: 4.728, Better: 4.803
+Classifier accuracy:
+Mean: 0.894, Worst: 0.833, Better: 0.917
+Jaccard Score: 0.152
+
+Ionosphere
+               precision    recall  f1-score   support
+
+           0       0.91      0.95      0.93        22
+           1       0.92      0.86      0.89        14
+
+    accuracy                           0.92        36
+   macro avg       0.92      0.91      0.91        36
+weighted avg       0.92      0.92      0.92        36
+
+
+Arrithmia
+Dataset: arrhythmia
+Execution time:
+Mean: 23.190, Worst: 21.502, Better: 26.045
+Classifier accuracy:
+Mean: 0.645, Worst: 0.543, Better: 0.826
+Jaccard Score: 0.210
+              precision    recall  f1-score   support
+
+                    1       0.77      0.92      0.84        26
+                    2       0.00      0.00      0.00         4
+                    3       1.00      1.00      1.00         1
+                    4       0.67      0.80      0.73         5
+                    5       0.00      0.00      0.00         1
+                    6       0.00      0.00      0.00         1
+                    10      1.00      0.86      0.92         7
+                    15      0.00      0.00      0.00         1
+
+    accuracy                          0.76        46
+   macro avg      0.43      0.45      0.44        46
+weighted avg      0.68      0.76      0.72        46
