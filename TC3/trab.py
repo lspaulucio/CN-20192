@@ -4,9 +4,12 @@
 # Natural Computing - 2019/2
 # Computacional Assignment 3
 
-from datasets import Ionosphere, Wine, Arrhythmia
-from sklearn.neural_network import MLPClassifier
 import numpy as np
+from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import jaccard_score, classification_report, confusion_matrix
+from datasets import Ionosphere, Wine, Arrhythmia
+from time import time
 
 def sum_weights(weights):
     n = len(weights)
@@ -22,33 +25,48 @@ if __name__ == "__main__":
 
     NUM_ITER = 20
     NUM_EPOCHS = 100
+    RUNS = 6
 
-    best_weights_list = []
-    for ITER in range(NUM_ITER):
-        x_train, y_train, x_test, y_test, classes = Wine()
-        num_features = x_train.shape[1]
-        net = MLPClassifier(hidden_layer_sizes=(num_features))
+    # Adicionar time
+    importances = []
+    svm_acc = []
+    for j in range(RUNS):
+        best_weights_list = []
 
-        best_weights = []
-        best_acc = 0
+        for ITER in range(NUM_ITER):
+            x_train, y_train, x_test, y_test, classes = Wine()
+            num_features = x_train.shape[1]
+            net = MLPClassifier(hidden_layer_sizes=(num_features))
 
-        for i in range(NUM_EPOCHS):
-            net.partial_fit(x_train, y_train, classes=classes)
-            weights = net.coefs_[0]
-            val_acc = net.score(x_test, y_test)
+            best_weights = []
+            best_acc = 0
+
+            for i in range(NUM_EPOCHS):
+                net.partial_fit(x_train, y_train, classes=classes)
+                weights = net.coefs_[0]
+                val_acc = net.score(x_test, y_test)
+                
+                if val_acc > best_acc:
+                    best_acc = val_acc
+                    best_weights = weights
+                    # print(best_acc)
             
-            if val_acc > best_acc:
-                best_acc = val_acc
-                best_weights = weights
-                # print(best_acc)
+            best_weights_list.append(best_weights)
+            print(best_acc)
         
-        best_weights_list.append(best_weights)
-        print(best_acc)
-    
-    summed_weights = sum_weights(best_weights_list)
-    importance = list(reversed(np.argsort(summed_weights))) 
-    print(importance) 
+        summed_weights = sum_weights(best_weights_list)
+        importance = list(reversed(np.argsort(summed_weights))) 
+        importances.append(importance)
 
+        svm = SVC(kernel='linear')
+        NUM_SELECTED_FEATURES = 7
+        mask = [0 if i not in importance[:NUM_SELECTED_FEATURES] else 1 for i in range(num_features)]
+        x, xt = x_train * mask, x_test * mask
+        svm.fit(x, y_train)
+        score = svm.score(xt, y_test)
+        svm_acc.append(score)
+        
+    print(svm_acc)
 
 
 
