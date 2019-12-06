@@ -15,6 +15,7 @@ import time
 import random
 import pickle
 import warnings
+import argparse
 import numpy as np
 
 from ga import Population
@@ -29,6 +30,11 @@ from sklearn.exceptions import ConvergenceWarning
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description = 'Trabalho 3')
+    parser.add_argument('--dataset', action='store', dest='dataset', required=True, choices=['wine', 'ionosphere', 'arrhythmia'], help='Dataset que sera usado')
+
+    args = parser.parse_args()
 
     # Setting seed for reproducibility
     SEED = 500
@@ -50,12 +56,23 @@ if __name__ == "__main__":
     LEARNING_RATE = 1e-3
 
     # Features - Arrhythmia 279, Ionosphere 34, Wine 13
-    NUM_FEATURES = 279
     # Classes - Arrhythmia 16, Ionosphere 2, Wine 3
-    NUM_CLASSES = 16
+
+    if args.dataset == 'wine':
+        load_dataset = Wine
+        NUM_FEATURES = 13
+        NUM_CLASSES = 3
+    elif args.dataset == 'ionosphere':
+        load_dataset = Ionosphere
+        NUM_FEATURES = 34
+        NUM_CLASSES = 2
+    elif args.dataset == 'arrhythmia':
+        load_dataset = Arrhythmia
+        NUM_FEATURES = 279
+        NUM_CLASSES = 16
 
     # Loading dataset
-    x_train, y_train, x_test, y_test = Arrhythmia()
+    x_train, y_train, x_test, y_test = load_dataset()
     
     HIDDEN_SIZE = int(np.sqrt(NUM_FEATURES * NUM_CLASSES))
     
