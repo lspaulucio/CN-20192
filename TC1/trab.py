@@ -33,6 +33,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = 'Trabalho 3')
     parser.add_argument('--dataset', action='store', dest='dataset', required=True, choices=['wine', 'ionosphere', 'arrhythmia'], help='Dataset que sera usado')
+    parser.add_argument('--model', action='store', dest='model', default='nn', required=False, choices=['elm', 'nn'], help='Modelo de treinamento que sera usado')
 
     args = parser.parse_args()
 
@@ -98,8 +99,12 @@ if __name__ == "__main__":
                 feature_mask = ind.chromosome
                 x_tr = feature_mask * x_train
                 x_ts = feature_mask * x_test
-                model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
-                # model = ELM(HIDDEN_SIZE)
+                
+                if args.model == 'nn':
+                    model = NeuralClassifier(HIDDEN_SIZE, LEARNING_RATE, NUM_EPOCHS)
+                else:
+                    model = ELM(HIDDEN_SIZE)
+
                 model.fit(x_tr, y_train)
                 score = model.score(x_ts, y_test)
                 error = 1 - score
